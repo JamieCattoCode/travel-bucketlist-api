@@ -34,22 +34,22 @@ module.exports = (connection, DataTypes) => {
         },
         password: {
             type: DataTypes.STRING,
-            // allowNull: false,
-            // validate: {
-            //     len: {
-            //         args: [8.99],
-            //         msg: 'Your password must be 8 characters or above.'
-            //     },
-            //     notNull:
-            //     {
-            //         args: true,
-            //         msg: 'You need to enter a password.'
-            //     },
-            //     notEmpty: {
-            //         args: true,
-            //         msg: 'Your password cannot be left empty.'
-            //     }
-            // }
+            allowNull: false,
+            validate: {
+                len: {
+                    args: [8.99],
+                    msg: 'Your password must be 8 characters or above.'
+                },
+                notNull:
+                {
+                    args: true,
+                    msg: 'You need to enter a password.'
+                },
+                notEmpty: {
+                    args: true,
+                    msg: 'Your password cannot be left empty.'
+                }
+            }
         }
     };
 

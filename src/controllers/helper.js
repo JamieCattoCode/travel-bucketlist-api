@@ -29,7 +29,6 @@ exports.addItem = async (res, item, Model) => {
         const itemWithoutPassword = removePassword(newItem.dataValues);
         res.status(201).json(itemWithoutPassword);
     } catch (err) {
-        //const errMessage = err.errors?.map((e) => e.message);
         res.status(404).json({message: err});
     }
 }
