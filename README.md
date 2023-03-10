@@ -14,7 +14,7 @@ An API for interacting with the database for our Travel Bucketlist app.
 5. Use .env and .env.test files for environment variables
 6. Use `npm  start` to start the app
 7. Use Postman to send and receive requests to the database, or use pgAdmin4's Query Tool
-7. Use `npm test` to test the CRUD endpoints
+8. Use `npm test` to test the CRUD endpoints
 ### Endpoints
 #### **POST**:
 - /users &raar; Add a new user to the database. Requires 'username', 'email' and 'password' values as JSON format in the request body.
@@ -42,3 +42,23 @@ I reiterate my point from the POST endpoint section: it's best to stick to these
 - /destinations/:id &raar; Delete a *destination* record from the database by id.
 - /favourites/:id &raar; Delete a *favourite* record from the database by id.
 - /lists/:id &raar; Delete a *list* record from the database by id.
+### Sending requests with axios
+Use the endpoints above for guidance on parameters and body JSON.
+
+To send a request to the database using axios, we first have to install axios as a dependency with `npm i -S axios`
+
+Then we can import axios into our code and make a request like this:
+```
+import axios from 'axios';
+
+axios
+.post('http://localhost:3000/users')
+.send({
+    username: 'example_username',
+    email: 'hello.world@outlook.com',
+    password: 'qwertyuiop123'
+ })
+ .then((response) => console.log(response))
+ .catch((error) => console.log(error))
+```
+The above code makes a post request to the users endpoint, logging either a successful response or an error message to the console.
