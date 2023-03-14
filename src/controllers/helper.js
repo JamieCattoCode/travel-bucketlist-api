@@ -1,7 +1,7 @@
 const { User, Destination, List, Favourite } = require('../models');
 
 const removePassword = (object) => {
-    if(object.hasOwnProperty('password')) {
+    if(object.password) {
         delete object.password;
     }
     return object;
@@ -27,9 +27,9 @@ exports.addItem = async (res, item, Model) => {
     try {
         const newItem = await Model.create(item);
         const itemWithoutPassword = removePassword(newItem.dataValues);
-        res.status(201).json(itemWithoutPassword);
+        res.status(201).set('Access-Control-Allow-Origin', '*').json(itemWithoutPassword);
     } catch (err) {
-        res.status(404).json({message: err});
+        res.status(404).set('Access-Control-Allow-Origin', '*').json({message: err});
     }
 }
 
