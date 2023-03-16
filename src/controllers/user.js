@@ -6,9 +6,9 @@ exports.addUser = async (req, res) => {
     try {
         const newItem = await User.create(req.body);
         // const itemWithoutPassword = removePassword(newItem.dataValues);
-        res.status(201).set('Access-Control-Allow-Origin', '*').json(newItem);
+        return res.status(201).json(newItem);
     } catch (err) {
-        res.status(404).set('Access-Control-Allow-Origin', '*').json({message: err});
+        return res.status(404).json({message: err});
     }
 };
 
@@ -19,12 +19,16 @@ exports.getAllUsers = async (req, res) => {
                 username: req.query.username
             }
         });
-        if (!users) {
-            return res.status(404).json({ message: `user '${req.query.username}' does not exist.` });
+
+        try {
+            const [ userData ] = users;
+            if (!userData.id) {
+                return res.status(404).json({ message: `user '${req.query.username}' does not exist.` });
+            }
+            return res.status(200).json(userData);
+        } catch (err) {
+            return res.status(404)  .json({ message: `user '${req.query.username}' does not exist.` });
         }
-    
-        const [ userObject ] = users;
-        res.status(200).set('Access-Control-Allow-Origin', '*').json(userObject);
     } else {
         helper.getAllItems(res, User);
     }

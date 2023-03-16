@@ -40,6 +40,27 @@ describe('/users', () => {
       });
 
       describe('GET /users', () => {
+
+        it('gets a user with a correct username query', async () => {
+          const user = users[0];
+          const response = await request(app).get(`/users?username=${user.username}`);
+
+          console.log(response.body);
+
+          expect(response.status).to.equal(200);
+          expect(response.body.username).to.equal(user.username);
+          expect(response.body.email).to.equal(user.email);
+        });
+
+        it('returns a 404 with an incorrect username query', async () => {
+          const response = await request(app).get('/users?username=qwerty123');
+
+          console.log(response.body);
+
+          expect(response.status).to.equal(404);
+          expect(response.body.message).to.equal("user 'qwerty123' does not exist.");
+        });
+
         it('gets all users in the database', async () => {
           const response = await request(app).get('/users');
           

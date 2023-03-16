@@ -3,6 +3,7 @@ module.exports = (connection, DataTypes) => {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
                 notNull: {
                     args: true,
@@ -11,12 +12,13 @@ module.exports = (connection, DataTypes) => {
                 notEmpty: {
                     args: true,
                     msg: 'Your username cannot be left empty.'
-                }
+                },
             }
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true,
             validate: {
                 isEmail: {
                     args: true,
