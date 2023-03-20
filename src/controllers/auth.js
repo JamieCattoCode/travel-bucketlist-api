@@ -53,16 +53,15 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, password } = req.body;
     
-        if (!(username && email && password)) {
-            return res.status(400).send('You need to enter a username, email, and password.');
+        if (!(username && password)) {
+            return res.status(400).send('You need to enter a username AND password.');
         }
 
         const user = await User.findOne({ where: 
             {
-                username: username, 
-                email: email
+                username: username
             } 
         });
     
@@ -76,7 +75,8 @@ exports.login = async (req, res) => {
             .cookie('userToken', token, {maxAge: 1000*60*60*2}) // 2 hours maxAge
             .send({
                 status: 201,
-                message: 'User logged in.'
+                message: 'User logged in.',
+                user
             });
             // .json({user: userWithToken});
 
