@@ -2,7 +2,7 @@ const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const TOKEN_KEY = 'Jg5pp8H4qVLr';
+const TOKEN_KEY = process.env.TOKEN_KEY;
 
 exports.register = async (req, res) => {
     try {
@@ -29,11 +29,9 @@ exports.register = async (req, res) => {
         });
 
         const token = jwt.sign(
-            { username: newUser.username, email: newUser.email },
+            { user: newUser },
             TOKEN_KEY
             );
-
-        const newUserWithToken = {...newUser, token: token};
 
         return res.status(201)
         .cookie(
@@ -44,10 +42,9 @@ exports.register = async (req, res) => {
             status: 201,
             message: 'New user created.'
         })
-        //.json({user: newUserWithToken});
         
     } catch (err) {
-        res.status(400);
+        res.status(400).json({ error: err });
     }
 }
 
@@ -67,7 +64,7 @@ exports.login = async (req, res) => {
     
         if (user && (await bcrypt.compare(password, user.password))) {
             const token = jwt.sign(
-                { username: user.username, email: user.email },
+                { user },
                 TOKEN_KEY,
             );
 
@@ -78,11 +75,10 @@ exports.login = async (req, res) => {
                 message: 'User logged in.',
                 user
             });
-            // .json({user: userWithToken});
 
         } else return res.status(400).send('Invalid credentials entered.');
 
         } catch (err) {
-            console.log(err);
+            res.status(400).json({ error: err });
         }
 }
