@@ -19,17 +19,25 @@ exports.login = async (req, res) => {
         });
     
         if (user && (await bcrypt.compare(password, user.password))) {
-            const token = jwt.sign(
+            const accessToken = jwt.sign(
                 { user },
                 TOKEN_KEY,
+                { expiresIn: '1m' }
+            );
+
+            const refreshToken = jwt.sign(
+                { user },
+                TOKEN_KEY,
+                { expiresIn: '1d' }
             );
 
             return res.status(201)
-            .cookie('userToken', token, {maxAge: 1000*60*60*2}) // 2 hours maxAge
+            .cookie('userToken', refreshToken, { maxAge: 1000*60*60*24 }) // 2 hours maxAge
             .send({
                 status: 201,
                 message: 'User logged in.',
-                user
+                user,
+                accessToken
             });
 
         } else return res.status(400).send('Invalid credentials entered.');
