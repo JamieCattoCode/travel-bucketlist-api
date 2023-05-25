@@ -8,5 +8,6 @@ router.get('', favouriteController.getAllFavourites);
 router.get('/:id', favouriteController.getFavourite);
 router.patch('/:id', favouriteController.updateFavourite);
 router.delete('/:id', favouriteController.deleteFavourite);
+router.delete('/', favouriteController.deleteFavouriteWithQueries)
 
 module.exports = router;

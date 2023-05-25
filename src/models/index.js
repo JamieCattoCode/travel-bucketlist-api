@@ -17,15 +17,15 @@ const setupDatabase = () => {
     const User = UserModel(connection, Sequelize);
     const Destination = DestinationModel(connection, Sequelize);
     const List = ListModel(connection, Sequelize);
-    const Favourite = FavouriteModel(connection);
+    const Favourite = FavouriteModel(connection, Sequelize);
 
-    Destination.hasMany(Favourite, {
-        foreignkey: {
-            name: 'DestinationId',
-            allowNull: false
-        }
-    });
-    Favourite.belongsTo(Destination);
+    // Destination.hasMany(Favourite, {
+        // foreignkey: {
+        //     name: 'DestinationId',
+        //     allowNull: false
+        // }
+    // });
+    // Favourite.belongsTo(Destination);
     User.hasMany(Favourite, {
         foreignkey: {
             name: 'UserId',
