@@ -27,9 +27,9 @@ exports.addItem = async (res, item, Model) => {
     try {
         const newItem = await Model.create(item);
         const itemWithoutPassword = removePassword(newItem.dataValues);
-        res.status(201).json(itemWithoutPassword).set('Access-Control-Allow-Origin', '*');
+        res.status(201).json(itemWithoutPassword);
     } catch (err) {
-        res.status(404).set('Access-Control-Allow-Origin', '*').json({message: err});
+        res.status(404).json({message: err});
     }
 }
 
