@@ -2,8 +2,10 @@
 const { Client } = require('pg')
 const path = require('path')
 
+const DATABASE_EXISTS_ERROR_CODE = "42P04";
+
 // capture first command line argument passed to this script
-const envName = process.argv.slice(2)[0]
+const envName = process.argv.slice(2)[0];
 
 // this function decides whether to load .env or .env.test.
 
@@ -41,8 +43,7 @@ const createDatabase = async (databaseName) => {
   } catch (err) {
 
     switch (err.code) {
-    // this is the postgres error code for when a database already exists. You could store this in a constant to make the code more readable
-    case "42P04":
+    case DATABASE_EXISTS_ERROR_CODE:
       console.log('Database already exists!')
       break
     default:
