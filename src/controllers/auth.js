@@ -2,7 +2,7 @@ const { User } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const TOKEN_KEY = process.env.TOKEN_KEY;
+const TOKEN_KEY = process.env.ACCESS_TOKEN_KEY;
 
 exports.login = async (req, res) => {
     try {
@@ -20,13 +20,13 @@ exports.login = async (req, res) => {
     
         if (user && (await bcrypt.compare(password, user.password))) {
             const accessToken = jwt.sign(
-                { user },
+                { userId: user.id },
                 TOKEN_KEY,
                 { expiresIn: '1m' }
             );
 
             const refreshToken = jwt.sign(
-                { user },
+                { userId: user.id },
                 TOKEN_KEY,
                 { expiresIn: '1d' }
             );
@@ -43,6 +43,7 @@ exports.login = async (req, res) => {
         } else return res.status(400).send('Invalid credentials entered.');
 
         } catch (err) {
-            res.status(400).json({ error: err });
+            console.log(err);
+            res.status(400).json({ err });
         }
 }
